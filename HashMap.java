@@ -1,109 +1,173 @@
 /*
 * File: HashMap.java
 * Derek Hessinger
-* CS231
-* 11/1/22
+* CS231 B
+* 11/2/22
 */
+
+
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
-public class HashMap<K, V> implements MapSet<K, V>{
+public class HashMap<K, V> implements MapSet<K, V> {
 
-	// use .hashCode()
-	// returns an int to represent an object
-	// if two objects are the same (have the same contents), they will have the same hashcode (via the hashCode() method)
+    LinkedList<KeyValuePair<K, V>>[] map;
+    int size;
 
-	private LinkedList<MapSet.KeyValuePair<K, V>>[] map;
-	int size;
+    public HashMap(){
 
-	public HashMap(int initialCapacity){
+        this.map = new LinkedList[10];
+        this.size = 0;
+    }
 
-		map = (LinkedList<MapSet.KeyValuePair<K, V>>[]) new LinkedList[initialCapacity];
-		size = 0;
-	}
+    public HashMap(int initialCapacity) {
+        this.map = new LinkedList[initialCapacity];
+        this.size = 0;
+    }
 
-	private int capacity(){
+    public int size(){
+        return this.size;
+    }
 
-		return map.length;
-	}
+    // Check if this.map should be set to null
+    public void clear(){
+        this.map = null;
+        this.size = 0;
+    }
+
+    private int capacity() {
+        return this.map.length;
+    }
+
+    // this method returns the index that will be used by any given key for this
+    // mapping
+    private int hash(K key) {
+        return Math.abs(key.hashCode() % capacity()); // this returns a value between 0 and capacity() - 1, inclusive
+    }
+
+    public V put(K key, V value) {
+        int index = hash(key);
+
+        if (map[index] == null) {
+            map[index] = new LinkedList<KeyValuePair<K, V>>();
+            map[index].add(new KeyValuePair<K, V>(key, value));
+            size++;
+            // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
+            //map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
+            return null;
+        } else {
+            for (KeyValuePair<K, V> kvp : map[index]) {
+                if (kvp.getKey().equals(key)) {
+                    V oldValue = kvp.getValue();
+                    kvp.setValue(value);
+                    return oldValue;
+                }
+            }
+            map[index].add(new KeyValuePair<K, V>(key, value));
+            size++;
+            return null;
+        }
+    }
+
+    // Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key
+    public V get(K key) {
+        int index = hash(key);
+
+        if (map[index] == null) {
+            return null;
+        } else {
+            for (KeyValuePair<K, V> kvp : map[index]) {
+                if (kvp.getKey().equals(key)) {
+                    return kvp.getValue();
+                }
+            } return null;
+        }
+    }
+
+    // Returns true if this map contains a mapping for the specified key to a value
+    public boolean containsKey(K key){
+
+        if (this.get(key) != null){
+            return true;
+        }
+
+        return false;
+    }
+
+    // Ask professor about this one
+    // Is this a BST or linked list?
+    public V remove(K key){
+
+        int index = hash(key);
+
+        for (KeyValuePair<K, V> kvp : map[index]){
+
+            if (kvp.getKey().equals(key)){
 
 
-	// Returns index that I should look at to insert/find specified key within my map
-	private int hash(K key){
+            }
+        }
 
-		return Math.abs(key.hashCode() % capacity()); // returns a value between 0 and capacity - 1 inclusive
-	}
+    }
 
-	public void clear(){
+    // public ArrayList<K> keySet(){
 
-		this.map = null;
-		this.size = 0;
-	}
 
-	public int size(){
+    // }
 
-		return this.size();
-	}
+    public static void main(String[] args) {
+        HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>(5);
+        for (int i = 0; i < 5; i++) {
+            hm.put(i, i + 1);
+        }
 
-	public V put(K key, V value){
+        System.out.println(hm.get(0));
+        System.out.println(hm.get(5));
 
-		int index = hash(key);
-		if (map[index] != null){
+        hm.put(6, 7);
+        System.out.println(hm.get(6));
+        System.out.println(hm.get(1));
 
-			for (MapSet.KeyValuePair<K, V> kvp : map[index]){
+        // HashMap<String, Integer> hm = new HashMap<String, Integer>(10);
+        // for(String word : someRedditCountFile){
+        //     hm.put(word, whateverValueItShouldBe);
+        // }
+    }
 
-				if (kvp.getKey().equals(key)){
+    // @Override
+    // public boolean containsKey(K key) {
+    //     // TODO Auto-generated method stub
+    //     return false;
+    // }
 
-					V toReturn = kvp.getValue();
-					kvp.setValue(value);
-					return toReturn;
-				}
-			}
-			map[index] = new LinkedList<MapSet.KeyValuePair<K, V>>();
-			map[index].add(new MapSet.KeyValuePair<K, V>(key, value));
-			size++;
-			// If size is too big compared to capacity, expand
-			//map = (LinkedList<MapSet.KeyValuePair<K, V>>[]) new LinkedList[map.length * someReasonableFactor]
-			return null;
-		}
-		else{
-			map[index] = new LinkedList<MapSet.KeyValuePair<K, V>>();
-			map[index].add(new MapSet.KeyValuePair<K, V>(key, value));
-			size++;
-			// If size is too big compared to capacity, expand
-			//map = (LinkedList<MapSet.KeyValuePair<K, V>>[]) new LinkedList[map.length * someReasonableFactor]
-			return null;
-		}
-	}
+    @Override
+    public ArrayList<K> keySet() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public V get(K key){
+    @Override
+    public ArrayList<V> values() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		int index = hash(key);
-		
-		if (map[index] == null){
-			return null;
-		}
-		else{
+    @Override
+    public ArrayList<MapSet.KeyValuePair<K, V>> entrySet() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-			for (MapSet.KeyValuePair<K, V> kvp: map[index]){
+    // @Override
+    // public int size() {
+    //     // TODO Auto-generated method stub
+    //     return 0;
+    // }
 
-				if (kvp.getKey().equals(key)){
+    // @Override
+    // public void clear() {
+    //     // TODO Auto-generated method stub
 
-					return kvp.getValue();
-				}
-			}
-			return null;
-		}
-	}
-
-	public static void main(String[] args){
-
-		HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>(5);
-		for (int i = 0; i < 5; i++){
-			hm.put(i, i+1);
-		}
-
-		System.out.println(hm.get(0));
-		System.out.println(hm.get(5));
-	}
+    // }
 }
