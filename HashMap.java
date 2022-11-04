@@ -105,7 +105,9 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
             if (kvp.getKey().equals(key)){
 
+                int idx = map[index].indexOf(kvp);
 
+                map[index].remove(idx);
             }
         }
 
