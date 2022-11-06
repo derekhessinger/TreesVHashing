@@ -101,22 +101,83 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
         int index = hash(key);
 
+        if (map[index] == null){
+
+            return null;
+        }
+
         for (KeyValuePair<K, V> kvp : map[index]){
 
             if (kvp.getKey().equals(key)){
 
                 int idx = map[index].indexOf(kvp);
 
+                V removed = kvp.getValue();
+
                 map[index].remove(idx);
+
+                return removed;
             }
         }
-
+        return null; 
     }
 
-    // public ArrayList<K> keySet(){
+    public ArrayList<K> keySet(){
 
+        ArrayList<K> keys = new ArrayList<K>();
 
-    // }
+        int index = 0;
+        
+        while (index < this.map.length){
+
+            if (map[index] != null){
+
+                for (KeyValuePair<K, V> kvp: map[index]){
+
+                    keys.add(kvp.getKey());
+                }
+            }
+        }
+        return keys;
+    }
+
+    public ArrayList<V> values(){
+
+        ArrayList<V> vals = new ArrayList<V>();
+
+        int index = 0;
+
+        while (index < this.map.length){
+
+            if (map[index] != null){
+
+                for (KeyValuePair<K, V> kvp: map[index]){
+
+                    vals.add(kvp.getValue());
+                }
+            }
+        }
+        return vals;
+    }
+
+    public ArrayList<KeyValuePair<K, V>> entrySet(){
+
+        ArrayList<KeyValuePair<K, V>> set = new ArrayList<KeyValuePair<K, V>>();
+
+        int index = 0;
+
+        while (index < this.map.length){
+
+            if (map[index] != null){
+
+                for (KeyValuePair<K, V> kvp: map[index]){
+
+                    set.add(kvp);
+                }
+            }
+        }
+        return set;
+    }
 
     public static void main(String[] args) {
         HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>(5);
@@ -131,6 +192,14 @@ public class HashMap<K, V> implements MapSet<K, V> {
         System.out.println(hm.get(6));
         System.out.println(hm.get(1));
 
+        System.out.println(hm.containsKey(1));
+
+        System.out.println(hm.containsKey(22));
+
+        System.out.println(hm.remove(1));
+
+        System.out.println(hm.containsKey(1));
+        
         // HashMap<String, Integer> hm = new HashMap<String, Integer>(10);
         // for(String word : someRedditCountFile){
         //     hm.put(word, whateverValueItShouldBe);
@@ -143,23 +212,23 @@ public class HashMap<K, V> implements MapSet<K, V> {
     //     return false;
     // }
 
-    @Override
-    public ArrayList<K> keySet() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    // @Override
+    // public ArrayList<K> keySet() {
+    //     // TODO Auto-generated method stub
+    //     return null;
+    // }
 
-    @Override
-    public ArrayList<V> values() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    // @Override
+    // public ArrayList<V> values() {
+    //     // TODO Auto-generated method stub
+    //     return null;
+    // }
 
-    @Override
-    public ArrayList<MapSet.KeyValuePair<K, V>> entrySet() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    // @Override
+    // public ArrayList<MapSet.KeyValuePair<K, V>> entrySet() {
+    //     // TODO Auto-generated method stub
+    //     return null;
+    // }
 
     // @Override
     // public int size() {
