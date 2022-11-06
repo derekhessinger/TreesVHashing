@@ -14,6 +14,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
     LinkedList<KeyValuePair<K, V>>[] map;
     int size;
+    double loadFactor;
 
     public HashMap(){
 
@@ -24,6 +25,12 @@ public class HashMap<K, V> implements MapSet<K, V> {
     public HashMap(int initialCapacity) {
         this.map = new LinkedList[initialCapacity];
         this.size = 0;
+    }
+
+    public HashMap(int initialCapacity, double loadFactor) {
+        this.map = new LinkedList[initialCapacity];
+        this.size = 0;
+        this.loadFactor = loadFactor;
     }
 
     public int size(){
@@ -56,7 +63,8 @@ public class HashMap<K, V> implements MapSet<K, V> {
             // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
             //map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
             return null;
-        } else {
+        } 
+        else {
             for (KeyValuePair<K, V> kvp : map[index]) {
                 if (kvp.getKey().equals(key)) {
                     V oldValue = kvp.getValue();
@@ -137,6 +145,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
                     keys.add(kvp.getKey());
                 }
             }
+            index += 1;
         }
         return keys;
     }
@@ -156,6 +165,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
                     vals.add(kvp.getValue());
                 }
             }
+            index += 1;
         }
         return vals;
     }
@@ -175,8 +185,33 @@ public class HashMap<K, V> implements MapSet<K, V> {
                     set.add(kvp);
                 }
             }
+            index += 1;
         }
         return set;
+    }
+
+    public String toString(){
+
+        String str = "";
+
+        int index = 0;
+
+        while (index < this.map.length){ 
+
+            str += index + ": ";
+
+            if (map[index] != null){
+
+                for (KeyValuePair<K,V> kvp: map[index]){
+
+                    str += kvp + ", ";
+                }
+            }
+            str += "\n";
+
+            index += 1;
+        }
+        return str;
     }
 
     public static void main(String[] args) {
@@ -185,20 +220,33 @@ public class HashMap<K, V> implements MapSet<K, V> {
             hm.put(i, i + 1);
         }
 
-        System.out.println(hm.get(0));
-        System.out.println(hm.get(5));
+        for (int i = 5; i < 10; i++) {
+            hm.put(i, i - 1);
+        }
+
+
+        // System.out.println(hm.get(0));
+        // System.out.println(hm.get(5));
 
         hm.put(6, 7);
-        System.out.println(hm.get(6));
-        System.out.println(hm.get(1));
+        // System.out.println(hm.get(6));
+        // System.out.println(hm.get(1));
 
-        System.out.println(hm.containsKey(1));
+        // System.out.println(hm.containsKey(1));
 
-        System.out.println(hm.containsKey(22));
+        // System.out.println(hm.containsKey(22));
 
-        System.out.println(hm.remove(1));
+        // System.out.println(hm.remove(1));
 
-        System.out.println(hm.containsKey(1));
+        // System.out.println(hm.containsKey(1));
+
+        // System.out.println(hm.keySet());
+
+        // System.out.println(hm.values());
+
+        System.out.println(hm.entrySet());
+
+        System.out.println(hm);
         
         // HashMap<String, Integer> hm = new HashMap<String, Integer>(10);
         // for(String word : someRedditCountFile){
