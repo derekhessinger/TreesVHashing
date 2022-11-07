@@ -29,7 +29,8 @@ public class HashMapTests{
 			assert map2.getClass() == HashMap.class : "Error in HashMap::HashMap()";
 			assert map3.getClass() == HashMap.class : "Error in HashMap::HashMap()";
 
-
+			// check each individual fields of the hashmap
+			// don't check class type
 		}
 
 		// case 2: testing size()
@@ -43,6 +44,8 @@ public class HashMapTests{
 
 			// test
 			assert map1.size() == 0 : "Error in HashMap::size()";
+
+			// check size with nonzero value
 		}
 
 		// case 3: testing put()
@@ -59,6 +62,7 @@ public class HashMapTests{
 			// test
 			assert map1.size() == 1 : "Error in HashMap::put()";
 		}
+		//can use get for this test
 
 		// case 4: testing clear()
 		{
@@ -92,6 +96,7 @@ public class HashMapTests{
 			assert map1.get(1) == 1 : "Error in HashMap::get()";
 			assert map1.get(5) == null : "Error in HashMap::get()";
 		}
+		//test put that would expand the map
 
 		// case 6: testing containsKey()
 		{
@@ -109,6 +114,7 @@ public class HashMapTests{
 			assert map1.containsKey(2) == false: "Error in HashMap::containsKey()";
 		}
 
+
 		// case 7: testing remove()
 		{
 
@@ -125,6 +131,8 @@ public class HashMapTests{
 			assert map1.get(1) == null : "Error in HashMap::remove()";
 			assert map1.size() == 0 : "Error in HashMap::remove()";
 		}
+		//add test for something that doesn't exist
+		//test that would shrink the hashmap
 
 		// case 8: testing keySet() ***finish this***
 		{
@@ -136,7 +144,8 @@ public class HashMapTests{
 			map1.put(3,3);
 			map1.put(4,4);
 			map1.put(5,5);
-			ArrayList<K> keys = new ArrayList<K>();
+
+			ArrayList<Integer> keys = new ArrayList<Integer>();
 			keys.add(1);
 			keys.add(2);
 			keys.add(3);
@@ -144,10 +153,62 @@ public class HashMapTests{
 			keys.add(5);
 
 			// verify
-			System.out.println(map1.keySet() + " == [1, 2, 3, 4, 5]");
+			System.out.println(map1.keySet() + " == " + keys);
 
 			// test
-			assert map1.keySet() == keys : "Error in HashMap::keySet()";
+			assert map1.keySet().size() == 5 : "Error in HashMap::keySet()";
+
+			//asset each key is correct
+		}
+
+		// case 9: testing values()
+		{
+
+			// setup
+			HashMap<Integer, Integer> map1 = new HashMap<Integer, Integer>();
+			map1.put(1,1);
+			map1.put(2,2);
+			map1.put(3,3);
+			map1.put(4,4);
+			map1.put(5,5);
+
+			ArrayList<Integer> vals = new ArrayList<Integer>();
+			vals.add(1);
+			vals.add(2);
+			vals.add(3);
+			vals.add(4);
+			vals.add(5);
+
+			// verify
+			System.out.println(map1.values() + " == " + vals);
+
+			// test
+			assert map1.values().size() == 5 : "Error in HashMap::values()";
+		}
+
+		// case 10: testing entrySet()
+		{
+
+			// setup
+			HashMap<Integer, Integer> map1 = new HashMap<Integer, Integer>();
+			map1.put(1,1);
+			map1.put(2,2);
+			map1.put(3,3);
+			map1.put(4,4);
+			map1.put(5,5);
+
+			ArrayList<MapSet.KeyValuePair<Integer,Integer>> set = new ArrayList<MapSet.KeyValuePair<Integer,Integer>>();
+			set.add(1,1);
+			set.add(2,2);
+			set.add(3,3);
+			set.add(4,4);
+			set.add(5,5);
+
+			// verify
+			System.out.println(map1.entrySet() + " == " + set);
+
+			// test
+			assert map1.entrySet().size() == 5 : "Error in HashMap::entrySet()";
 		}
 	}
 }
