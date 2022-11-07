@@ -61,7 +61,10 @@ public class HashMap<K, V> implements MapSet<K, V> {
             map[index].add(new KeyValuePair<K, V>(key, value));
             size++;
             // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
-            //map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
+            if (this.size > (capacity()/3)){
+
+                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
+            }
             return null;
         } 
         else {
@@ -123,6 +126,8 @@ public class HashMap<K, V> implements MapSet<K, V> {
                 V removed = kvp.getValue();
 
                 map[index].remove(idx);
+
+                this.size--;
 
                 return removed;
             }
