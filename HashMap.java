@@ -20,11 +20,13 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
         this.map = new LinkedList[10];
         this.size = 0;
+        this.loadFactor = 0.75;
     }
 
     public HashMap(int initialCapacity) {
         this.map = new LinkedList[initialCapacity];
         this.size = 0;
+        this.loadFactor = 0.75;
     }
 
     public HashMap(int initialCapacity, double loadFactor) {
@@ -53,6 +55,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
         return Math.abs(key.hashCode() % capacity()); // this returns a value between 0 and capacity() - 1, inclusive
     }
 
+    // puts value in hashmap
     public V put(K key, V value) {
         int index = hash(key);
 
@@ -61,9 +64,25 @@ public class HashMap<K, V> implements MapSet<K, V> {
             map[index].add(new KeyValuePair<K, V>(key, value));
             size++;
             // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
-            if (this.size > (capacity()/3)){
+            if (this.size > (capacity()*this.loadFactor)){
 
                 map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
+
+                int mapIdx = 0;
+
+                while (mapIdx < this.map.length){
+
+                    if (map[mapIdx] != null){
+
+                        for (KeyValuePair<K, V> kvp: map[mapIdx]){
+
+                            K k = kvp.getKey();
+                            V v = kvp.getValue();
+                            put(k, v);
+                        }
+                    }
+                    index += 1;
+                }
             }
             return null;
         } 
@@ -129,6 +148,26 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.size--;
 
+                if (this.size < (capacity()*(this.loadFactor*this.loadFactor*this.loadFactor))){
+
+                    map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length / 3];
+
+                    int mapIdx = 0;
+
+                    while (mapIdx < this.map.length){
+
+                        if (map[mapIdx] != null){
+
+                            for (KeyValuePair<K, V> kv: map[mapIdx]){
+
+                                K k = kv    .getKey();
+                                V v = kv.getValue();
+                                put(k, v);
+                            }
+                        }
+                        index += 1;
+                    }
+                }
                 return removed;
             }
         }
