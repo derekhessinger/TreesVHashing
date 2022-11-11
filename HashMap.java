@@ -18,7 +18,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
     public HashMap(){
 
-        this.map = new LinkedList[10];
+        this.map = new LinkedList[1000];
         this.size = 0;
         this.loadFactor = 0.75;
     }
@@ -62,26 +62,19 @@ public class HashMap<K, V> implements MapSet<K, V> {
         if (map[index] == null) {
             map[index] = new LinkedList<KeyValuePair<K, V>>();
             map[index].add(new KeyValuePair<K, V>(key, value));
-            size++;
+            this.size++;
             // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
-            if (this.size > (capacity()*this.loadFactor)){
+            if (size() > (int)(capacity()*this.loadFactor)){
 
-                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * (int)(capacity()/this.loadFactor)];
+                ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
 
-                int mapIdx = 0;
+                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
 
-                while (mapIdx < this.map.length){
+                this.size = 0;
 
-                    if (map[mapIdx] != null){
+                for (KeyValuePair<K, V> kvp : kvpList){
 
-                        for (KeyValuePair<K, V> kvp: map[mapIdx]){
-
-                            K k = kvp.getKey();
-                            V v = kvp.getValue();
-                            put(k, v);
-                        }
-                    }
-                    mapIdx += 1;
+                    this.put(kvp.getKey(), kvp.getValue());
                 }
             }
             return null;
@@ -95,25 +88,18 @@ public class HashMap<K, V> implements MapSet<K, V> {
                 }
             }
             map[index].add(new KeyValuePair<K, V>(key, value));
-            size++;
-            if (this.size > (capacity()*this.loadFactor)){
+            this.size++;
+            if (size() > (int)(capacity()*this.loadFactor)){
 
-                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * (int)(capacity()/this.loadFactor)];
+                ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
 
-                int mapIdx = 0;
+                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
 
-                while (mapIdx < this.map.length){
+                this.size = 0;
 
-                    if (map[mapIdx] != null){
+                for (KeyValuePair<K, V> kvp : kvpList){
 
-                        for (KeyValuePair<K, V> kvp: map[mapIdx]){
-
-                            K k = kvp.getKey();
-                            V v = kvp.getValue();
-                            this.put(k, v);
-                        }
-                    }
-                    mapIdx += 1;
+                    put(kvp.getKey(), kvp.getValue());
                 }
             }
             return null;
@@ -173,7 +159,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                     ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
 
-                    map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[this.map.length / ((int)(capacity()*this.loadFactor))];
+                    map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[this.map.length / 3];
 
                     this.size = 0;
 
@@ -279,45 +265,16 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
         System.out.println(hm);
 
-        for (int i = 5; i < 15; i++) {
-            hm.put(i, i + 1);
-        }
-
-        System.out.println(hm);
-
-        // System.out.println(hm.get(0));
-        // System.out.println(hm.get(5));
-
-        //hm.put(6, 7);
-        // System.out.println(hm.get(6));
-        // System.out.println(hm.get(1));
-
-        // System.out.println(hm.containsKey(1));
-
-        // System.out.println(hm.containsKey(22));
-
-        // System.out.println(hm.remove(1));
-
-        // System.out.println(hm.containsKey(1));
-
-        // System.out.println(hm.keySet());
-
-        // System.out.println(hm.values());
-
-        System.out.println(hm.entrySet());
-
         for (int i = 5; i < 10; i++) {
-            hm.remove(i);
+            hm.put(i, i + 1);
+            System.out.println(hm);
         }
 
-        System.out.println(hm.entrySet());
+        
+        hm.remove(8);
+        hm.remove(9);
 
         System.out.println(hm);
-        
-        // HashMap<String, Integer> hm = new HashMap<String, Integer>(10);
-        // for(String word : someRedditCountFile){
-        //     hm.put(word, whateverValueItShouldBe);
-        // }
     }
 
     // @Override
