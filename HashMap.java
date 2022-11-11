@@ -168,24 +168,20 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.size--;
 
+                // call entry set
                 if (this.size < (capacity()*(this.loadFactor*this.loadFactor*this.loadFactor))){
+
+                    ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
 
                     map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[this.map.length / ((int)(capacity()*this.loadFactor))];
 
-                    int mapIdx = 0;
+                    this.size = 0;
 
-                    while (mapIdx < this.map.length){
+                    for (KeyValuePair<K,V> kv : kvpList){
 
-                        if (map[mapIdx] != null){
-
-                            for (KeyValuePair<K, V> kv: map[mapIdx]){
-
-                                K k = kv.getKey();
-                                V v = kv.getValue();
-                                this.put(k, v);
-                            }
-                        }
-                        mapIdx += 1;
+                        K k = kv.getKey();
+                        V v = kv.getValue();
+                        this.put(k, v);
                     }
                 }
                 return removed;
@@ -310,9 +306,11 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
         System.out.println(hm.entrySet());
 
-        for (int i = 5; i < 13; i++) {
+        for (int i = 5; i < 10; i++) {
             hm.remove(i);
         }
+
+        System.out.println(hm.entrySet());
 
         System.out.println(hm);
         
