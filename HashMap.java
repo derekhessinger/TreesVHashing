@@ -66,7 +66,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
             // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
             if (this.size > (capacity()*this.loadFactor)){
 
-                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * 3];
+                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * (int)(capacity()/this.loadFactor)];
 
                 int mapIdx = 0;
 
@@ -81,7 +81,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
                             put(k, v);
                         }
                     }
-                    index += 1;
+                    mapIdx += 1;
                 }
             }
             return null;
@@ -96,6 +96,26 @@ public class HashMap<K, V> implements MapSet<K, V> {
             }
             map[index].add(new KeyValuePair<K, V>(key, value));
             size++;
+            if (this.size > (capacity()*this.loadFactor)){
+
+                map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length * (int)(capacity()/this.loadFactor)];
+
+                int mapIdx = 0;
+
+                while (mapIdx < this.map.length){
+
+                    if (map[mapIdx] != null){
+
+                        for (KeyValuePair<K, V> kvp: map[mapIdx]){
+
+                            K k = kvp.getKey();
+                            V v = kvp.getValue();
+                            this.put(k, v);
+                        }
+                    }
+                    mapIdx += 1;
+                }
+            }
             return null;
         }
     }
@@ -150,7 +170,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 if (this.size < (capacity()*(this.loadFactor*this.loadFactor*this.loadFactor))){
 
-                    map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[map.length / 3];
+                    map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[this.map.length / ((int)(capacity()*this.loadFactor))];
 
                     int mapIdx = 0;
 
@@ -160,12 +180,12 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                             for (KeyValuePair<K, V> kv: map[mapIdx]){
 
-                                K k = kv    .getKey();
+                                K k = kv.getKey();
                                 V v = kv.getValue();
-                                put(k, v);
+                                this.put(k, v);
                             }
                         }
-                        index += 1;
+                        mapIdx += 1;
                     }
                 }
                 return removed;
@@ -260,19 +280,19 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
     public static void main(String[] args) {
         HashMap<Integer, Integer> hm = new HashMap<Integer, Integer>(5);
-        for (int i = 0; i < 5; i++) {
+
+        System.out.println(hm);
+
+        for (int i = 5; i < 15; i++) {
             hm.put(i, i + 1);
         }
 
-        for (int i = 5; i < 10; i++) {
-            hm.put(i, i - 1);
-        }
-
+        System.out.println(hm);
 
         // System.out.println(hm.get(0));
         // System.out.println(hm.get(5));
 
-        hm.put(6, 7);
+        //hm.put(6, 7);
         // System.out.println(hm.get(6));
         // System.out.println(hm.get(1));
 
@@ -289,6 +309,10 @@ public class HashMap<K, V> implements MapSet<K, V> {
         // System.out.println(hm.values());
 
         System.out.println(hm.entrySet());
+
+        for (int i = 5; i < 13; i++) {
+            hm.remove(i);
+        }
 
         System.out.println(hm);
         
