@@ -78,9 +78,9 @@ public class WordCounter{
     	return null;
   	}
 
-  	public double buildMap(ArrayList<String> words){
+  	public long buildMap(ArrayList<String> words){
 
-  		double start = System.nanoTime();
+  		long start = System.nanoTime();
 
   		for (String word : words){
 
@@ -93,16 +93,16 @@ public class WordCounter{
   			ds.put(word, 0);
   		}
 
-  		double end = System.nanoTime();
+  		long end = System.nanoTime();
 
-  		double time = start - end;
+  		long time = end - start;
 
   		return time;
   	}
 
   	public void clearMap(){
 
-  		this.ds = null;
+  		ds.clear();
   	}
 
   	public int totalWordCount(){
@@ -139,5 +139,34 @@ public class WordCounter{
   		double freq = wc / totalWordCount();
 
   		return freq;
+  	}
+
+  	public static void main(String[] args){
+
+  		WordCounter wc = new WordCounter("hashmap");
+
+  		ArrayList<String> files = new ArrayList<String>();
+  		files.add("reddit_comments_2008.txt");
+  		files.add("reddit_comments_2009.txt");
+  		files.add("reddit_comments_2010.txt");
+  		files.add("reddit_comments_2011.txt");
+  		files.add("reddit_comments_2012.txt");
+  		files.add("reddit_comments_2013.txt");
+  		files.add("reddit_comments_2014.txt");
+  		files.add("reddit_comments_2015.txt");
+
+  		for (String file : files){
+
+  			ArrayList<String> words = wc.readWords(file);
+
+  			for (int i = 0; i < 5; i++){
+  				//TODO: figure out how to count and print collisons
+  				long time = wc.buildMap(words);
+  				System.out.println("Time in nanoseconds for " + file + " iteration (" + i + "): " + time + " collisions: " + );
+  				wc.clearMap();
+  			}
+
+  			System.out.println("\n");
+  		}
   	}
 }
