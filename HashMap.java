@@ -15,6 +15,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
     LinkedList<KeyValuePair<K, V>>[] map;
     int size;
     double loadFactor;
+    int collisions;
 
     public HashMap(){
 
@@ -72,6 +73,8 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.size = 0;
 
+                this.collisions = 0;
+
                 for (KeyValuePair<K, V> kvp : kvpList){
 
                     this.put(kvp.getKey(), kvp.getValue());
@@ -89,6 +92,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
             }
             map[index].add(new KeyValuePair<K, V>(key, value));
             this.size++;
+            this.collisons++;
             if (size() > (int)(capacity()*this.loadFactor)){
 
                 ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
@@ -97,6 +101,8 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.size = 0;
 
+                this.collisions = 0;
+
                 for (KeyValuePair<K, V> kvp : kvpList){
 
                     put(kvp.getKey(), kvp.getValue());
@@ -104,6 +110,11 @@ public class HashMap<K, V> implements MapSet<K, V> {
             }
             return null;
         }
+    }
+
+    public int getCollisons(){
+
+        return this.collisons;
     }
 
     // Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key
