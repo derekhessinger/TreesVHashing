@@ -42,8 +42,9 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
     // Check if this.map should be set to null
     public void clear(){
-        this.map = null;
+        this.map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[(capacity())];
         this.size = 0;
+        this.collisions = 0;
     }
 
     private int capacity() {
@@ -52,6 +53,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
     // this method returns the index that will be used by any given key for this
     // mapping
+    //**ASK ABOUT A DIFFERENT HASH FUNCTION**
     private int hash(K key) {
         return Math.abs(key.hashCode() % capacity()); // this returns a value between 0 and capacity() - 1, inclusive
     }
@@ -92,7 +94,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
             }
             map[index].add(new KeyValuePair<K, V>(key, value));
             this.size++;
-            this.collisons++;
+            this.collisions++;
             if (size() > (int)(capacity()*this.loadFactor)){
 
                 ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
@@ -112,9 +114,9 @@ public class HashMap<K, V> implements MapSet<K, V> {
         }
     }
 
-    public int getCollisons(){
+    public int getCollisions(){
 
-        return this.collisons;
+        return this.collisions;
     }
 
     // Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key

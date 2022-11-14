@@ -15,22 +15,18 @@ public class HashMapTests{
 		{
 
 			// setup
-			HashMap<Integer, Integer> map1 = new HashMap<Integer, Integer>();
-			HashMap<Integer, Integer> map2 = new HashMap<Integer, Integer>(10);
-			HashMap<Integer, Integer> map3 = new HashMap<Integer, Integer>(10, 0.5);
+			HashMap<Integer, Integer> map1 = new HashMap<Integer, Integer>(10, 0.5);
 
 			// verify
-			System.out.println(map1.getClass() + " == class HashMap");
-			System.out.println(map2.getClass() + " == class HashMap");
-			System.out.println(map3.getClass() + " == class HashMap");
+			System.out.println(map1.size() + " == 0");
+			//System.out.println(map1.loadFactor + " == 0.5");
+			//System.out.println(map1.collisions + " == 0");
 
 			// test
-			assert map1.getClass() == HashMap.class : "Error in HashMap::HashMap()";
-			assert map2.getClass() == HashMap.class : "Error in HashMap::HashMap()";
-			assert map3.getClass() == HashMap.class : "Error in HashMap::HashMap()";
+			assert map1.size() == 0 : "Error in HashMap::HashMap()";
+			//assert map1.loadFactor == 0.5 : "Error in HashMap::HashMap()";
+			//assert map1.collisions == 0 : "Error in HashMap::HashMap()";
 
-			// check each individual fields of the hashmap
-			// don't check class type
 		}
 
 		// case 2: testing size()
@@ -44,8 +40,6 @@ public class HashMapTests{
 
 			// test
 			assert map1.size() == 0 : "Error in HashMap::size()";
-
-			// check size with nonzero value
 		}
 
 		// case 3: testing put()
@@ -56,13 +50,12 @@ public class HashMapTests{
 			map1.put(1,1);
 
 			// verify
-			System.out.println(map1);
+			//System.out.println(map1);
 			System.out.println(map1.size() + " == 1");
 
 			// test
 			assert map1.size() == 1 : "Error in HashMap::put()";
 		}
-		//can use get for this test
 
 		// case 4: testing clear()
 		{
@@ -96,7 +89,6 @@ public class HashMapTests{
 			assert map1.get(1) == 1 : "Error in HashMap::get()";
 			assert map1.get(5) == null : "Error in HashMap::get()";
 		}
-		//test put that would expand the map
 
 		// case 6: testing containsKey()
 		{
@@ -131,10 +123,8 @@ public class HashMapTests{
 			assert map1.get(1) == null : "Error in HashMap::remove()";
 			assert map1.size() == 0 : "Error in HashMap::remove()";
 		}
-		//add test for something that doesn't exist
-		//test that would shrink the hashmap
 
-		// case 8: testing keySet() ***finish this***
+		// case 8: testing keySet()
 		{
 
 			// setup
@@ -152,13 +142,23 @@ public class HashMapTests{
 			keys.add(4);
 			keys.add(5);
 
+			ArrayList<Integer> keyList = map1.keySet();
+
 			// verify
 			System.out.println(map1.keySet() + " == " + keys);
+			System.out.println(keyList.get(0) + " == 1");
+			System.out.println(keyList.get(1) + " == 2");
+			System.out.println(keyList.get(2) + " == 3");
+			System.out.println(keyList.get(3) + " == 4");
+			System.out.println(keyList.get(4) + " == 5");
 
 			// test
 			assert map1.keySet().size() == 5 : "Error in HashMap::keySet()";
-
-			//asset each key is correct
+			assert keyList.get(0).equals(1) : "Error in HashMap::keySet()";
+			assert keyList.get(1).equals(2) : "Error in HashMap::keySet()";
+			assert keyList.get(2).equals(3) : "Error in HashMap::keySet()";
+			assert keyList.get(3).equals(4) : "Error in HashMap::keySet()";
+			assert keyList.get(4).equals(5) : "Error in HashMap::keySet()";
 		}
 
 		// case 9: testing values()
@@ -181,9 +181,19 @@ public class HashMapTests{
 
 			// verify
 			System.out.println(map1.values() + " == " + vals);
+			System.out.println(vals.get(0) + " == 1");
+			System.out.println(vals.get(1) + " == 2");
+			System.out.println(vals.get(2) + " == 3");
+			System.out.println(vals.get(3) + " == 4");
+			System.out.println(vals.get(4) + " == 5");
 
 			// test
 			assert map1.values().size() == 5 : "Error in HashMap::values()";
+			assert vals.get(0).equals(1) : "Error in HashMap::values()";
+			assert vals.get(1).equals(2) : "Error in HashMap::values()";
+			assert vals.get(2).equals(3) : "Error in HashMap::values()";
+			assert vals.get(3).equals(4) : "Error in HashMap::values()";
+			assert vals.get(4).equals(5) : "Error in HashMap::values()";
 		}
 
 		// case 10: testing entrySet()
@@ -198,17 +208,33 @@ public class HashMapTests{
 			map1.put(5,5);
 
 			ArrayList<MapSet.KeyValuePair<Integer,Integer>> set = new ArrayList<MapSet.KeyValuePair<Integer,Integer>>();
-			set.add(1,1);
-			set.add(2,2);
-			set.add(3,3);
-			set.add(4,4);
-			set.add(5,5);
+			MapSet.KeyValuePair<Integer, Integer> num1 = new MapSet.KeyValuePair<Integer, Integer> (1,1);
+			MapSet.KeyValuePair<Integer, Integer> num2 = new MapSet.KeyValuePair<Integer, Integer> (2,2);
+			MapSet.KeyValuePair<Integer, Integer> num3 = new MapSet.KeyValuePair<Integer, Integer> (3,3);
+			MapSet.KeyValuePair<Integer, Integer> num4 = new MapSet.KeyValuePair<Integer, Integer> (4,4);
+			MapSet.KeyValuePair<Integer, Integer> num5 = new MapSet.KeyValuePair<Integer, Integer> (5,5);
+			set.add(num1);
+			set.add(num2);
+			set.add(num3);
+			set.add(num4);
+			set.add(num5);
 
 			// verify
 			System.out.println(map1.entrySet() + " == " + set);
+			System.out.println(map1.entrySet().get(0) + " == " + num1);
+			System.out.println(map1.entrySet().get(1) + " == " + num2);
+			System.out.println(map1.entrySet().get(2) + " == " + num3);
+			System.out.println(map1.entrySet().get(3) + " == " + num4);
+			System.out.println(map1.entrySet().get(4) + " == " + num5);
 
+			// figure out why this doesn't work
 			// test
 			assert map1.entrySet().size() == 5 : "Error in HashMap::entrySet()";
+			assert map1.entrySet().get(0).equals(num1) : "Error in HashMap::entrySet()";
+			assert map1.entrySet().get(1).equals(num2) : "Error in HashMap::entrySet()";
+			assert map1.entrySet().get(2).equals(num3) : "Error in HashMap::entrySet()";
+			assert map1.entrySet().get(3).equals(num4) : "Error in HashMap::entrySet()";
+			assert map1.entrySet().get(4).equals(num5) : "Error in HashMap::entrySet()";
 		}
 	}
 }

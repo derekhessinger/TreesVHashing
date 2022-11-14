@@ -25,7 +25,7 @@ public class WordCounter{
 			ds = new BSTMap<String, Integer>();
 		}
 		else if (data_structure.equals("hashmap")){
-			ds = new HashMap<String, Integer>();
+			ds = new HashMap<String, Integer>(1000, 0.5);
 		}
 	}
 
@@ -141,6 +141,11 @@ public class WordCounter{
   		return freq;
   	}
 
+  	public int getCollisions(){
+
+  		return ds.getCollisions();
+  	}
+
   	public static void main(String[] args){
 
   		WordCounter wc = new WordCounter("hashmap");
@@ -155,18 +160,18 @@ public class WordCounter{
   		files.add("reddit_comments_2014.txt");
   		files.add("reddit_comments_2015.txt");
 
+  		System.out.println("file,iteration,time,collisions");
+
   		for (String file : files){
 
   			ArrayList<String> words = wc.readWords(file);
 
   			for (int i = 0; i < 5; i++){
-  				//TODO: figure out how to count and print collisons
+  				//TODO: figure out how to count and print collisions
   				long time = wc.buildMap(words);
-  				System.out.println("Time in nanoseconds for " + file + " iteration (" + i + "): " + time + " collisions: " + );
+  				System.out.println(file + "," + i + "," + wc.buildMap(words) + "," + wc.getCollisions());
   				wc.clearMap();
   			}
-
-  			System.out.println("\n");
   		}
   	}
 }

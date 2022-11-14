@@ -13,10 +13,10 @@ public class WordCounterTests{
 		{
 
 			// setup
-			WordCounter wc = new WordCouner("bst");
+			WordCounter wc = new WordCounter("bst");
 
 			// verify
-			System.out.println()
+			System.out.println(wc.getClass() + " == bst");
 		}
 	}
 }

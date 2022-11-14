@@ -35,6 +35,7 @@ public class BSTMap<K extends Comparable<K>, V> implements MapSet<K, V>{
 	// Fields for BSTMap
 	private Node root;
 	private int size;
+	int collisons = 0;
 
 
 	// Constructor for BSTMap
@@ -88,6 +89,12 @@ public class BSTMap<K extends Comparable<K>, V> implements MapSet<K, V>{
 
 		return this.size;
 	}
+
+	 public int getCollisions(){
+
+        return this.collisons;
+    }
+
 
 	// Clears the BST
 	public void clear(){
