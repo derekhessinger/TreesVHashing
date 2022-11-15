@@ -42,11 +42,8 @@ public class WordCounter{
   			// Create buffered reader with file reader passed
   			BufferedReader br = new BufferedReader(fr);
 
-  			// Read the first line so it is not included in ArrayList
+  			// Read the first line
   			String line = br.readLine();
-
-  			// Read again to get to first line of data in file
-  			line = br.readLine();
 
   			// While the line is not equal to null
   			while (line != null){
