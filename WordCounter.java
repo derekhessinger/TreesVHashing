@@ -19,16 +19,18 @@ public class WordCounter{
 	MapSet<String, Integer> ds;
 	int wordCount;
 
+	// Constuctor for WordCounter
 	public WordCounter (String data_structure){
 
 		if (data_structure.equals("bst")){
 			ds = new BSTMap<String, Integer>();
 		}
 		else if (data_structure.equals("hashmap")){
-			ds = new HashMap<String, Integer>(1000, 0.5);
+			ds = new HashMap<String, Integer>(1000, 0.75);
 		}
 	}
 
+	// Returns an arraylist of all words in file
 	public ArrayList<String> readWords(String filename){
 
 		try{
@@ -75,10 +77,13 @@ public class WordCounter{
     	return null;
   	}
 
+  	// Builds map and returns time in nanoseconds
   	public long buildMap(ArrayList<String> words){
 
+  		// Start recording time
   		long start = System.nanoTime();
 
+  		// Put each word into the map
   		for (String word : words){
 
   			if (ds.get(word) != null){
@@ -87,31 +92,38 @@ public class WordCounter{
   				ds.put(word, val);
   			}
 
-  			ds.put(word, 0);
+  			ds.put(word, 1);
   		}
 
+  		// Stop recording time
   		long end = System.nanoTime();
 
+  		// Calculate total time
   		long time = end - start;
 
   		return time;
   	}
 
+  	// Clears map
   	public void clearMap(){
 
   		ds.clear();
+  		this.wordCount = 0;
   	}
 
+  	// Returns total word count
   	public int totalWordCount(){
 
   		return wordCount;
   	}
 
+  	// Returns unique word count
   	public int uniqueWordCount(){
 
   		return ds.size();
   	}
 
+  	// Returns count of word passed
   	public int getCount(String word){
 
   		if (ds.get(word) == null){
@@ -124,6 +136,7 @@ public class WordCounter{
   		return count;
   	}
 
+  	// Returns the frequency of the word passed
   	public double getFrequency(String word){
 
   		if (ds.get(word) == null){
@@ -133,11 +146,12 @@ public class WordCounter{
 
   		int wc = ds.get(word);
 
-  		double freq = wc / totalWordCount();
+  		double freq = (double)wc / totalWordCount();
 
   		return freq;
   	}
 
+  	// Returns the number of collisions (HashMap only)
   	public int getCollisions(){
 
   		return ds.getCollisions();
@@ -157,16 +171,15 @@ public class WordCounter{
   		files.add("reddit_comments_2014.txt");
   		files.add("reddit_comments_2015.txt");
 
-  		System.out.println("file,iteration,time,collisions");
+  		System.out.println("file,iteration,time,jesus,count,freq");
 
   		for (String file : files){
 
   			ArrayList<String> words = wc.readWords(file);
 
-  			for (int i = 0; i < 5; i++){
-  				//TODO: figure out how to count and print collisions
+  			for (int i = 0; i < 2; i++){
   				long time = wc.buildMap(words);
-  				System.out.println(file + "," + i + "," + wc.buildMap(words) + "," + wc.getCollisions());
+  				System.out.println(file + "," + i + "," + time + "," + wc.getCount("jesus") + ", " + wc.getFrequency("jesus"));
   				wc.clearMap();
   			}
   		}

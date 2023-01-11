@@ -12,11 +12,13 @@ import java.util.Random;
 
 public class HashMap<K, V> implements MapSet<K, V> {
 
+    // Fields
     LinkedList<KeyValuePair<K, V>>[] map;
     int size;
     double loadFactor;
     int collisions;
 
+    // Constructor for HashMap
     public HashMap(){
 
         this.map = new LinkedList[1000];
@@ -24,49 +26,54 @@ public class HashMap<K, V> implements MapSet<K, V> {
         this.loadFactor = 0.75;
     }
 
+    // Constuctor for HashMap with initial capacity taken as argument
     public HashMap(int initialCapacity) {
         this.map = new LinkedList[initialCapacity];
         this.size = 0;
         this.loadFactor = 0.75;
     }
-
+    // Constuctor for HashMap with initial capacity and load factor taken as arguments
     public HashMap(int initialCapacity, double loadFactor) {
         this.map = new LinkedList[initialCapacity];
         this.size = 0;
         this.loadFactor = loadFactor;
     }
 
+    // Returns size of HashMap
     public int size(){
         return this.size;
     }
 
-    // Check if this.map should be set to null
+    // Clears the HashMap
     public void clear(){
         this.map = (LinkedList<KeyValuePair<K, V>>[]) new LinkedList[(capacity())];
         this.size = 0;
         this.collisions = 0;
     }
 
-    private int capacity() {
+    // Helper function to return capacity of HashMap
+    private int capacity(){
         return this.map.length;
     }
 
-    // this method returns the index that will be used by any given key for this
-    // mapping
-    //**ASK ABOUT A DIFFERENT HASH FUNCTION**
-    private int hash(K key) {
+    // Creates hash for key passed
+    private int hash(K key){
         return Math.abs(key.hashCode() % capacity()); // this returns a value between 0 and capacity() - 1, inclusive
     }
 
-    // puts value in hashmap
-    public V put(K key, V value) {
+    // Puts value in hashmap
+    public V put(K key, V value){
+
+        // Grab index by hashing key
         int index = hash(key);
 
+        // If map index is null, start linked list and add the kvp
         if (map[index] == null) {
             map[index] = new LinkedList<KeyValuePair<K, V>>();
             map[index].add(new KeyValuePair<K, V>(key, value));
             this.size++;
-            // if size ever gets too big compared to capacity, then I need to recreate my map to be bigger
+
+            // If size is greater than capacity*loadfactor, increase map size
             if (size() > (int)(capacity()*this.loadFactor)){
 
                 ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
@@ -77,13 +84,15 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.collisions = 0;
 
+                // Copies each kvp to increased size HashMap
                 for (KeyValuePair<K, V> kvp : kvpList){
 
                     this.put(kvp.getKey(), kvp.getValue());
                 }
             }
             return null;
-        } 
+        }
+        // If the key already exists in the map, change the value to the one passed
         else {
             for (KeyValuePair<K, V> kvp : map[index]) {
                 if (kvp.getKey().equals(key)) {
@@ -92,9 +101,12 @@ public class HashMap<K, V> implements MapSet<K, V> {
                     return oldValue;
                 }
             }
+            // Add kvp to linked list if it has a different key
             map[index].add(new KeyValuePair<K, V>(key, value));
             this.size++;
             this.collisions++;
+
+            // Increase map size if size becomes to large
             if (size() > (int)(capacity()*this.loadFactor)){
 
                 ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
@@ -105,6 +117,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.collisions = 0;
 
+                // Add each kvp into larger HashMap
                 for (KeyValuePair<K, V> kvp : kvpList){
 
                     put(kvp.getKey(), kvp.getValue());
@@ -114,6 +127,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
         }
     }
 
+    // Returns total collisions
     public int getCollisions(){
 
         return this.collisions;
@@ -144,17 +158,18 @@ public class HashMap<K, V> implements MapSet<K, V> {
         return false;
     }
 
-    // Ask professor about this one
-    // Is this a BST or linked list?
+    // Removes kvp from map
     public V remove(K key){
 
         int index = hash(key);
 
+        // If nothing in index, return null
         if (map[index] == null){
 
             return null;
         }
 
+        // Iterate through each element in the index until the correct kvp is found
         for (KeyValuePair<K, V> kvp : map[index]){
 
             if (kvp.getKey().equals(key)){
@@ -167,7 +182,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                 this.size--;
 
-                // call entry set
+                // If size becomes too small compared to mapsize, decrease map size
                 if (this.size < (capacity()*(this.loadFactor*this.loadFactor*this.loadFactor))){
 
                     ArrayList<KeyValuePair<K, V>> kvpList = entrySet();
@@ -176,6 +191,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
 
                     this.size = 0;
 
+                    // Put each kvp back into smaller HashMap
                     for (KeyValuePair<K,V> kv : kvpList){
 
                         K k = kv.getKey();
@@ -189,6 +205,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
         return null; 
     }
 
+    // Returns ArrayList of all keys in map
     public ArrayList<K> keySet(){
 
         ArrayList<K> keys = new ArrayList<K>();
@@ -209,6 +226,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
         return keys;
     }
 
+    // Returns ArrayList of all values in map
     public ArrayList<V> values(){
 
         ArrayList<V> vals = new ArrayList<V>();
@@ -229,6 +247,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
         return vals;
     }
 
+    // Returns ArrayList of all kvps in map
     public ArrayList<KeyValuePair<K, V>> entrySet(){
 
         ArrayList<KeyValuePair<K, V>> set = new ArrayList<KeyValuePair<K, V>>();
@@ -249,6 +268,7 @@ public class HashMap<K, V> implements MapSet<K, V> {
         return set;
     }
 
+    // ToString function
     public String toString(){
 
         String str = "";
@@ -288,6 +308,8 @@ public class HashMap<K, V> implements MapSet<K, V> {
         hm.remove(9);
 
         System.out.println(hm);
+
+        System.out.println(hm.get(5));
     }
 
     // @Override

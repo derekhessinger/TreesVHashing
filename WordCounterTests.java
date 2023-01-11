@@ -51,10 +51,10 @@ public class WordCounterTests{
 
 			// assert
 			assert words.get(0).equals("This") : "Error in WordCounter::readWords()";
-			assert words.get(0).equals("is") : "Error in WordCounter::readWords()";
-			assert words.get(0).equals("a") : "Error in WordCounter::readWords()";
-			assert words.get(0).equals("test") : "Error in WordCounter::readWords()";
-			assert words.get(0).equals("file") : "Error in WordCounter::readWords()";
+			assert words.get(1).equals("is") : "Error in WordCounter::readWords()";
+			assert words.get(2).equals("a") : "Error in WordCounter::readWords()";
+			assert words.get(3).equals("test") : "Error in WordCounter::readWords()";
+			assert words.get(4).equals("file") : "Error in WordCounter::readWords()";
 		}
 
 		// case 4: testing buildMap()
@@ -147,13 +147,13 @@ public class WordCounterTests{
 			WordCounter wc1 = new WordCounter("hashmap");
 			ArrayList<String> words1 = wc1.readWords("test.txt");
 			wc1.buildMap(words1);
-			int result1 = wc1.getCount("This");
+			int result1 = wc1.getCount("test");
 			int result2 = wc1.getCount("Elephant");
 
 			WordCounter wc2 = new WordCounter("bst");
 			ArrayList<String> words2 = wc2.readWords("test.txt");
 			wc2.buildMap(words2);
-			int result3 = wc2.getCount("This");
+			int result3 = wc2.getCount("test");
 			int result4 = wc2.getCount("Elephant");
 
 			// verify
